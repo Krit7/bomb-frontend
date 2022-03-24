@@ -20,7 +20,7 @@ const FinanceSummary: React.FC = () => {
   const { to } = useTreasuryAllocationTimes();
   const cashStat = useCashPriceInEstimatedTWAP();
   const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(4) : null), [cashStat]);
-  const TVL = useTotalValueLocked();
+  const TVL = Number(useTotalValueLocked()).valueOf();
   const bombPriceInDollars = useMemo(
     () => (bombStats ? Number(bombStats.priceInDollars).toFixed(2) : null),
     [bombStats],
@@ -169,7 +169,7 @@ const FinanceSummary: React.FC = () => {
           </div>
           <div>
             <p>Live TWAP {scalingFactor}</p>
-            <p>TVL ${TVL}</p>
+            <p>TVL ${roundAndFormatNumber(TVL,2)}</p>
             <p>Last Epoch TWAP ??? </p>
           </div>
         </Grid>
