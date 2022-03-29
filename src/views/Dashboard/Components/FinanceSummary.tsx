@@ -12,6 +12,9 @@ import useCashPriceInEstimatedTWAP from '../../../hooks/useCashPriceInEstimatedT
 import useTreasuryAllocationTimes from '../../../hooks/useTreasuryAllocationTimes';
 import ProgressCountdown from '../../Boardroom/components/ProgressCountdown';
 import useTotalValueLocked from '../../../hooks/useTotalValueLocked';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Doughnut } from 'react-chartjs-2';
+ChartJS.register(ArcElement, Tooltip, Legend);
 const FinanceSummary: React.FC = () => {
   const bombStats = useBombStats();
   const bShareStats = usebShareStats();
@@ -53,7 +56,41 @@ const FinanceSummary: React.FC = () => {
     [tBondStats],
   );
   const tBondTotalSupply = useMemo(() => (tBondStats ? String(tBondStats.totalSupply) : null), [tBondStats]);
-
+  const chartData = {
+    datasets: [
+      {
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const chartOptions = {
+    cutoutPercentage: 80,
+    layout: { padding: 50 },
+    legend: {
+      display: false
+    },
+    responsive: true,
+    tooltips: {
+      borderWidth: 1
+    }
+  };
   return (
     <div style={{ color: 'white' }}>
       <h2>FINANCE SUMMARY</h2>
@@ -174,7 +211,7 @@ const FinanceSummary: React.FC = () => {
           </div>
         </Grid>
         <Grid item xs={4}>
-          COL-3
+          <Doughnut data={chartData} options={chartOptions}/>;
         </Grid>
       </Grid>
     </div>
